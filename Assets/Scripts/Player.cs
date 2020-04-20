@@ -1,0 +1,84 @@
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Player : MonoBehaviour
+{
+       
+    // Configuration params
+    [SerializeField] GameObject laserPrefab;
+    [SerializeField] float projectileSpeed = 10f;
+    [SerializeField] float moveSpeed = 10;
+    [SerializeField] float padding = 1f;
+    [SerializeField] float projectileFiringPeriod = 0.1f;
+
+    // Cached references
+    Coroutine firingCoroutine;
+
+    // Stats
+    float xMin;
+    float xMax;
+    float yMin;
+    float yMax;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        SetUpMoveBoundries();
+    }
+
+    private void Update()
+    {
+        Move();
+        Fire();
+    }
+
+    private void Fire()
+    {
+        if (Input.GetButtonDown("Fire1"))
+        {
+            firingCoroutine = StartCoroutine(FireContinuosly());
+        }
+        if (Input.GetButtonUp("Fire1"))
+        {
+            StopCoroutine(firingCoroutine);
+        }
+    }
+
+    IEnumerator FireContinuosly()
+    {
+        while (true) 
+        { 
+            // Quaternin.identity - use the current rotation
+            GameObject laser =
+                Instantiate(laserPrefab,
+                transform.position,
+                Quaternion.identity) as GameObject;
+
+            laser.GetComponent<Rigidbody2D>().velocity = new Vector2(0, projectileSpeed);
+            yield return new WaitForSeconds(projectileFiringPeriod);
+        }
+    }
+
+    private void Move()
+    {
+        // Create a var wich is horizontal change based on keyboard or joystick
+        // We multiply the delta per frame in the duration of 1 frame in the system
+        var deltaX = Input.GetAxis("Horizontal") * Time.deltaTime * moveSpeed;
+        var deltaY = Input.GetAxis("Vertical") * Time.deltaTime * moveSpeed;
+        var newXPos = Mathf.Clamp(transform.position.x + deltaX, xMin, xMax);
+        var newYPos = Mathf.Clamp(transform.position.y + deltaY, yMin, yMax);
+        transform.position = new Vector2(newXPos, newYPos);
+    }
+
+    private void SetUpMoveBoundries()
+    {
+        Camera gameCamera = Camera.main;
+        xMin = gameCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).x + padding;
+        xMax = gameCamera.ViewportToWorldPoint(new Vector3(1, 0, 0)).x - padding;
+        yMin = gameCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).y + padding;
+        yMax = gameCamera.ViewportToWorldPoint(new Vector3(0, 1, 0)).y - padding;
+    }
+
+}
