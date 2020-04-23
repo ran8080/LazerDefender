@@ -1,13 +1,14 @@
 ﻿<Properties StartupConfiguration="{87D4B756-6BF4-491B-7446-3A63F9E25526}|">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Enemy.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/BackgroundScroller.cs">
     <Files>
-      <File FileName="Assets/Scripts/Shredder.cs" Line="9" Column="38" />
+      <File FileName="Assets/Scripts/Shredder.cs" Line="10" Column="6" />
       <File FileName="Assets/Scripts/EnemyPathing.cs" Line="19" Column="5" />
       <File FileName="Assets/Scripts/WaveConfig.cs" Line="7" Column="1" />
-      <File FileName="Assets/Scripts/EnemySpawner.cs" Line="12" Column="53" />
-      <File FileName="Assets/Scripts/Player.cs" Line="44" Column="10" />
-      <File FileName="Assets/Scripts/DamageDealer.cs" Line="16" Column="28" />
-      <File FileName="Assets/Scripts/Enemy.cs" Line="19" Column="1" />
+      <File FileName="Assets/Scripts/EnemySpawner.cs" />
+      <File FileName="Assets/Scripts/DamageDealer.cs" Line="14" Column="21" />
+      <File FileName="Assets/Scripts/Player.cs" Line="82" Column="34" />
+      <File FileName="Assets/Scripts/Enemy.cs" Line="50" Column="88" />
+      <File FileName="Assets/Scripts/BackgroundScroller.cs" Line="7" Column="24" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
@@ -15,7 +16,7 @@
           <Node name="LazerDefender" expanded="True">
             <Node name="Assets" expanded="True">
               <Node name="Scripts" expanded="True">
-                <Node name="Enemy.cs" selected="True" />
+                <Node name="BackgroundScroller.cs" selected="True" />
               </Node>
             </Node>
           </Node>

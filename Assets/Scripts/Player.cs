@@ -5,12 +5,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-       
     // Configuration params
-    [SerializeField] GameObject laserPrefab;
-    [SerializeField] float projectileSpeed = 10f;
+    [Header("Player")]
     [SerializeField] float moveSpeed = 10;
     [SerializeField] float padding = 1f;
+    [SerializeField] int health = 200;
+
+    [Header("Projectile")]
+    [SerializeField] GameObject laserPrefab;
+    [SerializeField] float projectileSpeed = 10f;
     [SerializeField] float projectileFiringPeriod = 0.1f;
 
     // Cached references
@@ -70,6 +73,23 @@ public class Player : MonoBehaviour
         var newXPos = Mathf.Clamp(transform.position.x + deltaX, xMin, xMax);
         var newYPos = Mathf.Clamp(transform.position.y + deltaY, yMin, yMax);
         transform.position = new Vector2(newXPos, newYPos);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        DamageDealer damageDealer = collision.gameObject.GetComponent<DamageDealer>();
+        if (!damageDealer) { return; } // Return if the other doesn't have damage dealer
+        ProcessHit(damageDealer);
+    }
+
+    private void ProcessHit(DamageDealer damageDealer)
+    {
+        health -= damageDealer.GetDamage();
+        damageDealer.Hit();
+        if (health <= 0) 
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void SetUpMoveBoundries()
