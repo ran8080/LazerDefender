@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -10,11 +9,18 @@ public class Player : MonoBehaviour
     [SerializeField] float moveSpeed = 10;
     [SerializeField] float padding = 1f;
     [SerializeField] int health = 200;
+    [SerializeField] float destroyPlayerDelay = 0.2f;
 
     [Header("Projectile")]
     [SerializeField] GameObject laserPrefab;
     [SerializeField] float projectileSpeed = 10f;
     [SerializeField] float projectileFiringPeriod = 0.1f;
+
+    [Header("Audio Config")] 
+    [SerializeField] AudioClip shootSFX;
+    [SerializeField] AudioClip dieSFX;
+    [SerializeField] [Range(0, 1)] float shotSFXVolume = 0.1f;
+    [SerializeField] [Range(0, 1)] float dieSFXVolume = 0.2f;
 
     // Cached references
     Coroutine firingCoroutine;
@@ -53,6 +59,8 @@ public class Player : MonoBehaviour
     {
         while (true) 
         { 
+            AudioSource.PlayClipAtPoint(shootSFX, Camera.main.transform.position, shotSFXVolume);
+
             // Quaternin.identity - use the current rotation
             GameObject laser =
                 Instantiate(laserPrefab,
@@ -86,10 +94,18 @@ public class Player : MonoBehaviour
     {
         health -= damageDealer.GetDamage();
         damageDealer.Hit();
-        if (health <= 0) 
+        if (health <= 0)
         {
-            Destroy(gameObject);
+            Die();
         }
+    }
+
+    private void Die()
+    {
+        health = 0;
+        FindObjectOfType<Level>().LoadGameOver();
+        Destroy(gameObject, destroyPlayerDelay);
+        AudioSource.PlayClipAtPoint(dieSFX, Camera.main.transform.position, dieSFXVolume);
     }
 
     private void SetUpMoveBoundries()
@@ -99,6 +115,11 @@ public class Player : MonoBehaviour
         xMax = gameCamera.ViewportToWorldPoint(new Vector3(1, 0, 0)).x - padding;
         yMin = gameCamera.ViewportToWorldPoint(new Vector3(0, 0, 0)).y + padding;
         yMax = gameCamera.ViewportToWorldPoint(new Vector3(0, 1, 0)).y - padding;
+    }
+
+    public int GetHealth()
+    {
+        return health;
     }
 
 }

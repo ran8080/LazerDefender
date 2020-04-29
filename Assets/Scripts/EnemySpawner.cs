@@ -34,17 +34,13 @@ public class EnemySpawner : MonoBehaviour
             var newEnemy = Instantiate(
                 currentWave.GetEnemyPrefab(),
                 currentWave.GetWaypoints()[0].transform.position,
-                Quaternion.identity);
+                Quaternion.Euler(0, 0, currentWave.GetDeafultRotation()));
             
             // This is how we update the wave config for the enemy after we spawn it
             newEnemy.GetComponent<EnemyPathing>().SetWaveConfig(currentWave);
             yield return new WaitForSeconds(currentWave.GetTimeBetweenSpawns());
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        yield return new WaitForSeconds(currentWave.GetWaitTimeAfterWave());
     }
 }

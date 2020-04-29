@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ public class WaveConfig : ScriptableObject
     [SerializeField] float spawnRandomFactor = 0.3f;
     [SerializeField] int numberOfEnemies = 5;
     [SerializeField] float moveSpeed = 2f;
+    [SerializeField] float waitTimeAfterWave = 0;
+    [SerializeField] [Range(0f, 360f)] float defaultRotation = 0;
 
     public GameObject GetEnemyPrefab() 
     {
@@ -43,8 +46,18 @@ public class WaveConfig : ScriptableObject
         return numberOfEnemies;
     }
 
+    public float GetDeafultRotation()
+    {
+        return defaultRotation;
+    }
+
     public float GetMoveSpeed() 
     {
         return moveSpeed;
+    }
+
+    public float GetWaitTimeAfterWave()
+    {
+        return waitTimeAfterWave;
     }
 }
